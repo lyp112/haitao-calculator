@@ -8,247 +8,59 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #f5f3ee;
-      --surface: #ffffff;
-      --border: #e2ddd5;
-      --text: #1a1714;
-      --muted: #7a7570;
-      --accent: #c84b2f;
-      --accent-light: #fdf1ee;
-      --accent-border: #f0c4b8;
-      --green: #2a7a4b;
-      --green-light: #eef7f2;
-      --green-border: #b8dfc9;
-      --amber: #a05c10;
-      --amber-light: #fef8ee;
-      --amber-border: #f5d9a8;
-      --red: #c0392b;
-      --red-light: #fdf0ee;
-      --red-border: #f5c5bc;
+      --bg: #f5f3ee; --surface: #ffffff; --border: #e2ddd5;
+      --text: #1a1714; --muted: #7a7570; --accent: #c84b2f;
+      --green: #2a7a4b; --green-light: #eef7f2; --green-border: #b8dfc9;
+      --amber: #a05c10; --amber-light: #fef8ee; --amber-border: #f5d9a8;
+      --red: #c0392b; --red-light: #fdf0ee; --red-border: #f5c5bc;
+      --blue: #1a5fa8; --blue-light: #eef4fc; --blue-border: #b8d4f0;
     }
-
-    body {
-      font-family: 'Noto Sans SC', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 0 0 4rem;
-    }
-
-    header {
-      background: var(--text);
-      color: #fff;
-      padding: 2rem 1.5rem 1.75rem;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.35rem;
-    }
-
-    header p {
-      font-size: 0.875rem;
-      opacity: 0.6;
-      font-weight: 400;
-    }
-
-    .container {
-      max-width: 560px;
-      margin: 0 auto;
-      padding: 1.5rem 1.25rem 0;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-    }
-
-    .card-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
+    body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 4rem; }
+    header { background: var(--text); color: #fff; padding: 2rem 1.5rem 1.75rem; text-align: center; }
+    header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.35rem; }
+    header p { font-size: 0.875rem; opacity: 0.6; }
+    .container { max-width: 560px; margin: 0 auto; padding: 1.5rem 1.25rem 0; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+    .card-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
     .field { margin-bottom: 0.875rem; }
     .field:last-child { margin-bottom: 0; }
-
-    .field label {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-      font-weight: 500;
-    }
-
-    .field input,
-    .field select {
-      width: 100%;
-      padding: 0.6rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      background: #faf9f7;
-      color: var(--text);
-      transition: border-color 0.15s;
-      appearance: none;
-    }
-
-    .field input:focus,
-    .field select:focus {
-      outline: none;
-      border-color: var(--accent);
-      background: #fff;
-    }
-
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-
-    .rate-status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      margin-top: 0.4rem;
-      padding: 0.35rem 0.65rem;
-      border-radius: 6px;
-      width: fit-content;
-    }
+    .field label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.3rem; font-weight: 500; }
+    .field input, .field select { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: inherit; background: #faf9f7; color: var(--text); transition: border-color 0.15s; appearance: none; }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--accent); background: #fff; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .hint-box { margin-top: 0.5rem; padding: 0.5rem 0.75rem; background: #faf9f7; border: 1px solid var(--border); border-radius: 8px; font-size: 0.78rem; color: var(--muted); line-height: 1.55; display: none; }
+    .hint-box strong { color: var(--text); }
+    .hint-box a { color: var(--blue); }
+    .rate-status { display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; margin-top: 0.4rem; padding: 0.3rem 0.6rem; border-radius: 6px; }
     .rate-status.loading { background: var(--amber-light); color: var(--amber); border: 1px solid var(--amber-border); }
     .rate-status.success { background: var(--green-light); color: var(--green); border: 1px solid var(--green-border); }
     .rate-status.error   { background: var(--red-light);   color: var(--red);   border: 1px solid var(--red-border); }
-
-    .tax-hint {
-      margin-top: 0.5rem;
-      padding: 0.6rem 0.75rem;
-      background: #faf9f7;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.55;
-      display: none;
-    }
-
-    .tax-hint strong { color: var(--text); }
-
-    .btn {
-      width: 100%;
-      padding: 0.85rem;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      letter-spacing: 0.01em;
-      transition: opacity 0.15s, transform 0.1s;
-      margin-top: 0.25rem;
-    }
-
-    .btn:hover { opacity: 0.9; }
-    .btn:active { transform: scale(0.99); }
-
+    .ship-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+    .ship-card { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: border-color 0.15s; background: #faf9f7; }
+    .ship-card:hover { border-color: #aaa; }
+    .ship-card.selected { border: 2px solid var(--blue); background: var(--blue-light); }
+    .ship-card-name { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .ship-card-cost { font-size: 0.78rem; color: var(--accent); margin-top: 2px; font-weight: 500; }
+    .ship-card-time { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
     #result_section { display: none; }
-
-    .result-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .metric {
-      background: #faf9f7;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.875rem 1rem;
-    }
-
-    .metric-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 0.3rem;
-    }
-
-    .metric-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-
-    .verdict {
-      border-radius: 10px;
-      padding: 0.875rem 1rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      line-height: 1.5;
-      margin-bottom: 1rem;
-    }
-
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    .metric { background: #faf9f7; border: 1px solid var(--border); border-radius: 10px; padding: 0.875rem 1rem; }
+    .metric-label { font-size: 0.72rem; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .metric-value { font-size: 1.5rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+    .verdict { border-radius: 10px; padding: 0.875rem 1rem; font-size: 0.9rem; font-weight: 500; line-height: 1.5; margin-bottom: 1rem; }
     .verdict.cheaper  { background: var(--green-light);  color: var(--green);  border: 1px solid var(--green-border); }
     .verdict.expensive{ background: var(--red-light);    color: var(--red);    border: 1px solid var(--red-border); }
     .verdict.similar  { background: var(--amber-light);  color: var(--amber);  border: 1px solid var(--amber-border); }
-
     .breakdown { border-top: 1px solid var(--border); padding-top: 0.875rem; }
-
-    .breakdown-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.825rem;
-      color: var(--muted);
-      padding: 0.25rem 0;
-    }
-
-    .breakdown-total {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--text);
-      padding: 0.5rem 0 0;
-      border-top: 1px solid var(--border);
-      margin-top: 0.25rem;
-    }
-
-    .disclaimer {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 0.875rem;
-      line-height: 1.6;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 2.5rem;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    @media (max-width: 400px) {
-      .field-row { grid-template-columns: 1fr; }
-      .result-grid { grid-template-columns: 1fr; }
-    }
+    .breakdown-row { display: flex; justify-content: space-between; font-size: 0.825rem; color: var(--muted); padding: 0.25rem 0; }
+    .breakdown-total { display: flex; justify-content: space-between; font-size: 0.875rem; font-weight: 700; color: var(--text); padding: 0.5rem 0 0; border-top: 1px solid var(--border); margin-top: 0.25rem; }
+    .disclaimer { font-size: 0.72rem; color: var(--muted); margin-top: 0.875rem; line-height: 1.6; }
+    .btn { width: 100%; padding: 0.85rem; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: opacity 0.15s, transform 0.1s; margin-top: 0.25rem; }
+    .btn:hover { opacity: 0.9; }
+    .btn:active { transform: scale(0.99); }
+    footer { text-align: center; margin-top: 2.5rem; font-size: 0.75rem; color: var(--muted); }
+    @media (max-width: 400px) { .field-row, .result-grid, .ship-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -260,7 +72,6 @@
 
 <div class="container">
 
-  <!-- 商品信息 -->
   <div class="card">
     <p class="card-title">中国网购价格（淘宝 / 京东）</p>
     <div class="field-row">
@@ -270,7 +81,7 @@
       </div>
       <div class="field">
         <label>商品重量（克）</label>
-        <input type="number" id="weight" placeholder="例：500" min="0">
+        <input type="number" id="weight" placeholder="例：500" min="0" oninput="updateShipCosts()">
       </div>
     </div>
     <div class="field">
@@ -288,25 +99,23 @@
         <option value="sports">运动器材</option>
         <option value="other">其他</option>
       </select>
-      <div class="tax-hint" id="tax_hint"></div>
+      <div class="hint-box" id="tax_hint"></div>
     </div>
   </div>
 
-  <!-- 海运设置 -->
   <div class="card">
     <p class="card-title">海运设置</p>
-    <div class="field-row">
-      <div class="field">
-        <label>目的地</label>
-        <select id="country" onchange="onCountryChange()">
-          <option value="NZD">新西兰（NZD）</option>
-          <option value="AUD">澳大利亚（AUD）</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>运费（$/kg）</label>
-        <input type="number" id="ship_rate" value="35" min="0">
-      </div>
+    <div class="field">
+      <label>目的地</label>
+      <select id="country" onchange="onCountryChange()">
+        <option value="NZD">新西兰（NZD）</option>
+        <option value="AUD">澳大利亚（AUD）</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>选择转运公司 <span style="font-size:0.72rem;color:var(--muted);font-weight:400">— 输入重量后自动显示运费</span></label>
+      <div class="ship-grid" id="ship_grid"></div>
+      <div class="hint-box" id="ship_hint" style="display:block;margin-top:8px"></div>
     </div>
     <div class="field">
       <label>今日汇率（1 CNY = ? 本地币）</label>
@@ -315,7 +124,6 @@
     </div>
   </div>
 
-  <!-- 本地价格 -->
   <div class="card">
     <p class="card-title">本地购买价格</p>
     <div class="field">
@@ -326,7 +134,6 @@
 
   <button class="btn" onclick="calculate()">开始比较 →</button>
 
-  <!-- 结果 -->
   <div id="result_section">
     <div class="card" style="margin-top:1rem">
       <p class="card-title">计算结果</p>
@@ -343,35 +150,123 @@
       <div class="verdict" id="verdict_box"></div>
       <div class="breakdown">
         <div class="breakdown-row"><span>商品价格（换算后）</span><span id="b_goods">—</span></div>
-        <div class="breakdown-row"><span>海运费</span><span id="b_ship">—</span></div>
+        <div class="breakdown-row"><span id="b_ship_label">运费</span><span id="b_ship">—</span></div>
         <div class="breakdown-row"><span>关税（估算）</span><span id="b_tax">—</span></div>
         <div class="breakdown-total"><span>海淘合计</span><span id="b_total">—</span></div>
       </div>
-      <p class="disclaimer">* 关税为估算值，实际以海关征收为准。汇率来自 frankfurter.app，每日更新。本工具仅供参考。</p>
+      <p class="disclaimer">* 运费为参考报价，关税为估算，实际以收费为准。汇率来自 frankfurter.app，每日更新。本工具仅供参考。</p>
     </div>
   </div>
 
   <footer>海淘划算吗 · 专为新澳华人设计</footer>
-
 </div>
 
 <script>
   const fallbackRates = { NZD: 0.215, AUD: 0.205 };
   const symbols = { NZD: 'NZ$', AUD: 'A$' };
   let liveRates = {};
+  let selectedShipper = 0;
+
+  const shippers = [
+    {
+      name: '转运中国', note: '老牌转运，口碑稳定', url: 'https://www.zhuanyunzhongguo.com',
+      nzd: { first: 95, perKg: 75, minKg: 0.5, time: '15–25天' },
+      aud: { first: 90, perKg: 70, minKg: 0.5, time: '15–25天' }
+    },
+    {
+      name: '86速递', note: '华人社区常用，性价比高', url: 'https://www.86sd.com',
+      nzd: { first: 85, perKg: 68, minKg: 0.5, time: '10–20天' },
+      aud: { first: 80, perKg: 65, minKg: 0.5, time: '10–20天' }
+    },
+    {
+      name: '城市速瑞', note: '新西兰本地华人公司', url: 'https://ct.suruilogistics.com',
+      nzd: { first: 80, perKg: 60, minKg: 1, time: '20–35天（海运）' },
+      aud: { first: 85, perKg: 65, minKg: 1, time: '20–35天（海运）' }
+    },
+    {
+      name: '4PX递四方', note: '速度较快，适合急件', url: 'https://www.4px.com',
+      nzd: { first: 100, perKg: 80, minKg: 0.5, time: '7–15天' },
+      aud: { first: 95, perKg: 75, minKg: 0.5, time: '7–15天' }
+    }
+  ];
 
   const taxData = {
-    electronics: { NZD: 0,    AUD: 0,    hint: '电子产品通常<strong>免关税</strong>，GST 由跨境平台代扣。' },
+    electronics: { NZD: 0,    AUD: 0,    hint: '电子产品通常<strong>免关税</strong>，GST 由平台代扣。' },
     clothing:    { NZD: 0,    AUD: 0.05, hint: '新西兰服装<strong>免关税</strong>；澳大利亚约 <strong>5%</strong>。' },
     baby:        { NZD: 0,    AUD: 0,    hint: '母婴用品和玩具通常<strong>免关税</strong>。' },
-    health:      { NZD: 0,    AUD: 0.05, hint: '保健品约 <strong>0~5%</strong>，部分产品需申报。' },
-    food:        { NZD: 0,    AUD: 0.05, hint: '食品需通过生物安全检查，关税约 <strong>5%</strong>。' },
-    cosmetics:   { NZD: 0,    AUD: 0.05, hint: '护肤品约 <strong>0~5%</strong>，液体类注意包装限制。' },
+    health:      { NZD: 0,    AUD: 0.05, hint: '保健品约 <strong>0~5%</strong>，部分需申报。' },
+    food:        { NZD: 0,    AUD: 0.05, hint: '食品需通过生物安全检查，约 <strong>5%</strong>。' },
+    cosmetics:   { NZD: 0,    AUD: 0.05, hint: '护肤品约 <strong>0~5%</strong>，液体注意包装限制。' },
     home:        { NZD: 0,    AUD: 0.05, hint: '家居用品约 <strong>0~5%</strong>，木制品需检疫申报。' },
     books:       { NZD: 0,    AUD: 0,    hint: '书籍文具通常<strong>免关税</strong>。' },
-    sports:      { NZD: 0,    AUD: 0.05, hint: '运动器材约 <strong>0~5%</strong>，大件注意运费。' },
-    other:       { NZD: 0.05, AUD: 0.05, hint: '未知类别按 <strong>5%</strong> 估算，以海关实际判定为准。' }
+    sports:      { NZD: 0,    AUD: 0.05, hint: '运动器材约 <strong>0~5%</strong>。' },
+    other:       { NZD: 0.05, AUD: 0.05, hint: '未知类别按 <strong>5%</strong> 估算。' }
   };
+
+  function getRate(country) { return liveRates[country] || fallbackRates[country]; }
+
+  function calcShipCost(shipper, weightG, country) {
+    const c = country === 'NZD' ? shipper.nzd : shipper.aud;
+    const kg = Math.max(weightG / 1000, c.minKg);
+    if (kg <= 0.5) return c.first;
+    return c.first + Math.ceil((kg - 0.5) * 10) / 10 * c.perKg;
+  }
+
+  function updateShipCosts() {
+    const weight = parseFloat(document.getElementById('weight').value) || 0;
+    const country = document.getElementById('country').value;
+    const sym = symbols[country];
+    document.querySelectorAll('.ship-card').forEach((card, i) => {
+      const costCny = calcShipCost(shippers[i], weight, country);
+      const costLocal = costCny * getRate(country);
+      card.querySelector('.ship-card-cost').textContent = weight > 0
+        ? `约 ¥${costCny.toFixed(0)}（${sym}${costLocal.toFixed(0)}）`
+        : (country === 'NZD' ? shippers[i].nzd.time : shippers[i].aud.time);
+    });
+  }
+
+  function renderShipGrid() {
+    const country = document.getElementById('country').value;
+    const grid = document.getElementById('ship_grid');
+    grid.innerHTML = '';
+    shippers.forEach((s, i) => {
+      const c = country === 'NZD' ? s.nzd : s.aud;
+      const card = document.createElement('div');
+      card.className = 'ship-card' + (i === selectedShipper ? ' selected' : '');
+      card.innerHTML = `<div class="ship-card-name">${s.name}</div>
+        <div class="ship-card-cost">${c.time}</div>
+        <div class="ship-card-time">${s.note}</div>`;
+      card.onclick = () => { selectedShipper = i; renderShipGrid(); updateShipHint(); updateShipCosts(); };
+      grid.appendChild(card);
+    });
+    updateShipCosts();
+    updateShipHint();
+  }
+
+  function updateShipHint() {
+    const country = document.getElementById('country').value;
+    const s = shippers[selectedShipper];
+    const c = country === 'NZD' ? s.nzd : s.aud;
+    document.getElementById('ship_hint').innerHTML =
+      `<strong>${s.name}</strong>：首重 0.5kg ¥${c.first}，续重 ¥${c.perKg}/kg，时效 ${c.time}。
+      <a href="${s.url}" target="_blank">查看官网报价 →</a>`;
+  }
+
+  function updateTax() {
+    const cat = document.getElementById('category').value;
+    const country = document.getElementById('country').value;
+    const hint = document.getElementById('tax_hint');
+    if (!cat) { hint.style.display = 'none'; return; }
+    hint.style.display = 'block';
+    hint.innerHTML = `关税估算：<strong>${(taxData[cat][country] * 100).toFixed(0)}%</strong> — ${taxData[cat].hint}`;
+  }
+
+  function onCountryChange() {
+    const country = document.getElementById('country').value;
+    document.getElementById('exchange').value = getRate(country).toFixed(4);
+    renderShipGrid();
+    updateTax();
+  }
 
   async function fetchRates() {
     const status = document.getElementById('rate_status');
@@ -389,24 +284,7 @@
       status.className = 'rate-status error';
       status.textContent = '⚠ 获取失败，使用参考汇率';
     }
-  }
-
-  function onCountryChange() {
-    const country = document.getElementById('country').value;
-    const rate = liveRates[country] || fallbackRates[country];
-    document.getElementById('exchange').value = rate.toFixed(4);
-    updateTax();
-  }
-
-  function updateTax() {
-    const cat = document.getElementById('category').value;
-    const country = document.getElementById('country').value;
-    const hint = document.getElementById('tax_hint');
-    if (!cat) { hint.style.display = 'none'; return; }
-    const d = taxData[cat];
-    const pct = (d[country] * 100).toFixed(0);
-    hint.style.display = 'block';
-    hint.innerHTML = '关税估算：<strong>' + pct + '%</strong> — ' + d.hint;
+    updateShipCosts();
   }
 
   function fmt(n, sym) { return sym + n.toFixed(2); }
@@ -416,7 +294,6 @@
     const weight = parseFloat(document.getElementById('weight').value);
     const cat = document.getElementById('category').value;
     const country = document.getElementById('country').value;
-    const shipRate = parseFloat(document.getElementById('ship_rate').value);
     const localPrice = parseFloat(document.getElementById('local_price').value);
     const exchange = parseFloat(document.getElementById('exchange').value);
     const sym = symbols[country];
@@ -426,7 +303,8 @@
     if (!exchange) { alert('汇率获取中，请稍后再试'); return; }
 
     const goodsCost = cny * exchange;
-    const shipCost = (weight / 1000) * shipRate;
+    const shipCny = calcShipCost(shippers[selectedShipper], weight, country);
+    const shipCost = shipCny * exchange;
     const taxRate = taxData[cat][country];
     const taxCost = goodsCost * taxRate;
     const total = goodsCost + shipCost + taxCost;
@@ -436,7 +314,8 @@
     document.getElementById('res_online').textContent = fmt(total, sym);
     document.getElementById('res_local').textContent = fmt(localPrice, sym);
     document.getElementById('b_goods').textContent = fmt(goodsCost, sym);
-    document.getElementById('b_ship').textContent = fmt(shipCost, sym);
+    document.getElementById('b_ship_label').textContent = `运费（${shippers[selectedShipper].name}）`;
+    document.getElementById('b_ship').textContent = `¥${shipCny.toFixed(0)} → ${fmt(shipCost, sym)}`;
     document.getElementById('b_tax').textContent = taxRate === 0 ? fmt(0, sym) + ' (免税)' : fmt(taxCost, sym);
     document.getElementById('b_total').textContent = fmt(total, sym);
 
@@ -456,6 +335,7 @@
     document.getElementById('result_section').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  renderShipGrid();
   fetchRates();
 </script>
 </body>
