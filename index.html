@@ -31,4 +31,304 @@
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
     .hint-box { margin-top: 0.5rem; padding: 0.5rem 0.75rem; background: #faf9f7; border: 1px solid var(--border); border-radius: 8px; font-size: 0.78rem; color: var(--muted); line-height: 1.55; display: none; }
     .hint-box strong { color: var(--text); }
-    .hint-box a {
+    .hint-box a { color: var(--blue); }
+    .rate-status { display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; margin-top: 0.4rem; padding: 0.3rem 0.6rem; border-radius: 6px; }
+    .rate-status.loading { background: var(--amber-light); color: var(--amber); border: 1px solid var(--amber-border); }
+    .rate-status.success { background: var(--green-light); color: var(--green); border: 1px solid var(--green-border); }
+    .rate-status.error   { background: var(--red-light);   color: var(--red);   border: 1px solid var(--red-border); }
+    .ship-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+    .ship-card { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: border-color 0.15s; background: #faf9f7; }
+    .ship-card:hover { border-color: #aaa; }
+    .ship-card.selected { border: 2px solid var(--blue); background: var(--blue-light); }
+    .ship-card-name { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .ship-card-cost { font-size: 0.78rem; color: var(--accent); margin-top: 2px; font-weight: 500; }
+    .ship-card-time { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
+    #result_section { display: none; }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    .metric { background: #faf9f7; border: 1px solid var(--border); border-radius: 10px; padding: 0.875rem 1rem; }
+    .metric-label { font-size: 0.72rem; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .metric-value { font-size: 1.5rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+    .verdict { border-radius: 10px; padding: 0.875rem 1rem; font-size: 0.9rem; font-weight: 500; line-height: 1.5; margin-bottom: 1rem; }
+    .verdict.cheaper  { background: var(--green-light);  color: var(--green);  border: 1px solid var(--green-border); }
+    .verdict.expensive{ background: var(--red-light);    color: var(--red);    border: 1px solid var(--red-border); }
+    .verdict.similar  { background: var(--amber-light);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .breakdown { border-top: 1px solid var(--border); padding-top: 0.875rem; }
+    .breakdown-row { display: flex; justify-content: space-between; font-size: 0.825rem; color: var(--muted); padding: 0.25rem 0; }
+    .breakdown-total { display: flex; justify-content: space-between; font-size: 0.875rem; font-weight: 700; color: var(--text); padding: 0.5rem 0 0; border-top: 1px solid var(--border); margin-top: 0.25rem; }
+    .disclaimer { font-size: 0.72rem; color: var(--muted); margin-top: 0.875rem; line-height: 1.6; }
+    .btn { width: 100%; padding: 0.85rem; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: opacity 0.15s, transform 0.1s; margin-top: 0.25rem; }
+    .btn:hover { opacity: 0.9; }
+    .btn:active { transform: scale(0.99); }
+    footer { text-align: center; margin-top: 2.5rem; font-size: 0.75rem; color: var(--muted); }
+    @media (max-width: 400px) { .field-row, .result-grid, .ship-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>海淘划算吗？</h1>
+  <p>新澳华人 · 中国网购 vs 本地购买 · 一键比价</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <p class="card-title">中国网购价格（淘宝 / 京东）</p>
+    <div class="field-row">
+      <div class="field">
+        <label>商品价格（人民币 ¥）</label>
+        <input type="number" id="cny_price" placeholder="例：299" min="0">
+      </div>
+      <div class="field">
+        <label>商品重量（克）</label>
+        <input type="number" id="weight" placeholder="例：500" min="0" oninput="updateShipCosts()">
+      </div>
+    </div>
+    <div class="field">
+      <label>商品类别</label>
+      <select id="category" onchange="updateTax()">
+        <option value="">— 请选择类别 —</option>
+        <option value="electronics">电子产品（手机、耳机、数码）</option>
+        <option value="clothing">服装、鞋帽、箱包</option>
+        <option value="baby">母婴用品、玩具</option>
+        <option value="health">保健品、营养品</option>
+        <option value="food">食品、零食、茶叶</option>
+        <option value="cosmetics">护肤品、化妆品</option>
+        <option value="home">家居用品、厨具</option>
+        <option value="books">书籍、文具</option>
+        <option value="sports">运动器材</option>
+        <option value="other">其他</option>
+      </select>
+      <div class="hint-box" id="tax_hint"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">海运设置</p>
+    <div class="field">
+      <label>目的地</label>
+      <select id="country" onchange="onCountryChange()">
+        <option value="NZD">新西兰（NZD）</option>
+        <option value="AUD">澳大利亚（AUD）</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>选择转运公司 <span style="font-size:0.72rem;color:var(--muted);font-weight:400">— 输入重量后自动显示运费</span></label>
+      <div class="ship-grid" id="ship_grid"></div>
+      <div class="hint-box" id="ship_hint" style="display:block;margin-top:8px"></div>
+    </div>
+    <div class="field">
+      <label>今日汇率（1 CNY = ? 本地币）</label>
+      <input type="number" id="exchange" step="0.0001" placeholder="获取中…">
+      <div class="rate-status loading" id="rate_status">⏳ 正在获取实时汇率…</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">本地购买价格</p>
+    <div class="field">
+      <label>本地价格（本地货币）</label>
+      <input type="number" id="local_price" placeholder="例：89.99" min="0">
+    </div>
+  </div>
+
+  <button class="btn" onclick="calculate()">开始比较 →</button>
+
+  <div id="result_section">
+    <div class="card" style="margin-top:1rem">
+      <p class="card-title">计算结果</p>
+      <div class="result-grid">
+        <div class="metric">
+          <div class="metric-label">海淘总费用</div>
+          <div class="metric-value" id="res_online">—</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">本地购买</div>
+          <div class="metric-value" id="res_local">—</div>
+        </div>
+      </div>
+      <div class="verdict" id="verdict_box"></div>
+      <div class="breakdown">
+        <div class="breakdown-row"><span>商品价格（换算后）</span><span id="b_goods">—</span></div>
+        <div class="breakdown-row"><span id="b_ship_label">运费</span><span id="b_ship">—</span></div>
+        <div class="breakdown-row"><span>关税（估算）</span><span id="b_tax">—</span></div>
+        <div class="breakdown-total"><span>海淘合计</span><span id="b_total">—</span></div>
+      </div>
+      <p class="disclaimer">* 运费为参考报价，关税为估算，实际以收费为准。汇率来自 open.er-api.com，每日更新。本工具仅供参考。</p>
+    </div>
+  </div>
+
+  <footer>海淘划算吗 · 专为新澳华人设计</footer>
+</div>
+
+<script>
+  const fallbackRates = { NZD: 0.215, AUD: 0.205 };
+  const symbols = { NZD: 'NZ$', AUD: 'A$' };
+  let liveRates = {};
+  let selectedShipper = 0;
+
+  const shippers = [
+    { name: '转运中国', note: '老牌转运，口碑稳定', url: 'https://www.zhuanyunzhongguo.com',
+      nzd: { first: 95, perKg: 75, minKg: 0.5, time: '15–25天' },
+      aud: { first: 90, perKg: 70, minKg: 0.5, time: '15–25天' } },
+    { name: '86速递', note: '华人社区常用，性价比高', url: 'https://www.86sd.com',
+      nzd: { first: 85, perKg: 68, minKg: 0.5, time: '10–20天' },
+      aud: { first: 80, perKg: 65, minKg: 0.5, time: '10–20天' } },
+    { name: '城市速瑞', note: '新西兰本地华人公司', url: 'https://ct.suruilogistics.com',
+      nzd: { first: 80, perKg: 60, minKg: 1, time: '20–35天（海运）' },
+      aud: { first: 85, perKg: 65, minKg: 1, time: '20–35天（海运）' } },
+    { name: '4PX递四方', note: '速度较快，适合急件', url: 'https://www.4px.com',
+      nzd: { first: 100, perKg: 80, minKg: 0.5, time: '7–15天' },
+      aud: { first: 95, perKg: 75, minKg: 0.5, time: '7–15天' } }
+  ];
+
+  const taxData = {
+    electronics: { NZD: 0,    AUD: 0,    hint: '电子产品通常<strong>免关税</strong>，GST 由平台代扣。' },
+    clothing:    { NZD: 0,    AUD: 0.05, hint: '新西兰服装<strong>免关税</strong>；澳大利亚约 <strong>5%</strong>。' },
+    baby:        { NZD: 0,    AUD: 0,    hint: '母婴用品和玩具通常<strong>免关税</strong>。' },
+    health:      { NZD: 0,    AUD: 0.05, hint: '保健品约 <strong>0~5%</strong>，部分需申报。' },
+    food:        { NZD: 0,    AUD: 0.05, hint: '食品需通过生物安全检查，约 <strong>5%</strong>。' },
+    cosmetics:   { NZD: 0,    AUD: 0.05, hint: '护肤品约 <strong>0~5%</strong>，液体注意包装限制。' },
+    home:        { NZD: 0,    AUD: 0.05, hint: '家居用品约 <strong>0~5%</strong>，木制品需检疫申报。' },
+    books:       { NZD: 0,    AUD: 0,    hint: '书籍文具通常<strong>免关税</strong>。' },
+    sports:      { NZD: 0,    AUD: 0.05, hint: '运动器材约 <strong>0~5%</strong>。' },
+    other:       { NZD: 0.05, AUD: 0.05, hint: '未知类别按 <strong>5%</strong> 估算。' }
+  };
+
+  function getRate(country) { return liveRates[country] || fallbackRates[country]; }
+
+  function calcShipCost(shipper, weightG, country) {
+    const c = country === 'NZD' ? shipper.nzd : shipper.aud;
+    const kg = Math.max(weightG / 1000, c.minKg);
+    if (kg <= 0.5) return c.first;
+    return c.first + Math.ceil((kg - 0.5) * 10) / 10 * c.perKg;
+  }
+
+  function updateShipCosts() {
+    const weight = parseFloat(document.getElementById('weight').value) || 0;
+    const country = document.getElementById('country').value;
+    const sym = symbols[country];
+    document.querySelectorAll('.ship-card').forEach((card, i) => {
+      const costCny = calcShipCost(shippers[i], weight, country);
+      const costLocal = costCny * getRate(country);
+      card.querySelector('.ship-card-cost').textContent = weight > 0
+        ? '约 ¥' + costCny.toFixed(0) + '（' + sym + costLocal.toFixed(0) + '）'
+        : (country === 'NZD' ? shippers[i].nzd.time : shippers[i].aud.time);
+    });
+  }
+
+  function renderShipGrid() {
+    const country = document.getElementById('country').value;
+    const grid = document.getElementById('ship_grid');
+    grid.innerHTML = '';
+    shippers.forEach((s, i) => {
+      const c = country === 'NZD' ? s.nzd : s.aud;
+      const card = document.createElement('div');
+      card.className = 'ship-card' + (i === selectedShipper ? ' selected' : '');
+      card.innerHTML = '<div class="ship-card-name">' + s.name + '</div>' +
+        '<div class="ship-card-cost">' + c.time + '</div>' +
+        '<div class="ship-card-time">' + s.note + '</div>';
+      card.onclick = () => { selectedShipper = i; renderShipGrid(); updateShipHint(); updateShipCosts(); };
+      grid.appendChild(card);
+    });
+    updateShipCosts();
+    updateShipHint();
+  }
+
+  function updateShipHint() {
+    const country = document.getElementById('country').value;
+    const s = shippers[selectedShipper];
+    const c = country === 'NZD' ? s.nzd : s.aud;
+    document.getElementById('ship_hint').innerHTML =
+      '<strong>' + s.name + '</strong>：首重 0.5kg ¥' + c.first + '，续重 ¥' + c.perKg + '/kg，时效 ' + c.time + '。 ' +
+      '<a href="' + s.url + '" target="_blank">查看官网报价 →</a>';
+  }
+
+  function updateTax() {
+    const cat = document.getElementById('category').value;
+    const country = document.getElementById('country').value;
+    const hint = document.getElementById('tax_hint');
+    if (!cat) { hint.style.display = 'none'; return; }
+    hint.style.display = 'block';
+    hint.innerHTML = '关税估算：<strong>' + (taxData[cat][country] * 100).toFixed(0) + '%</strong> — ' + taxData[cat].hint;
+  }
+
+  function onCountryChange() {
+    const country = document.getElementById('country').value;
+    document.getElementById('exchange').value = getRate(country).toFixed(4);
+    renderShipGrid();
+    updateTax();
+  }
+
+  async function fetchRates() {
+    const status = document.getElementById('rate_status');
+    try {
+      const res = await fetch('https://open.er-api.com/v6/latest/CNY');
+      const data = await res.json();
+      liveRates = { NZD: data.rates.NZD, AUD: data.rates.AUD };
+      const country = document.getElementById('country').value;
+      document.getElementById('exchange').value = liveRates[country].toFixed(4);
+      status.className = 'rate-status success';
+      status.textContent = '✓ 实时汇率（' + data.time_last_update_utc.slice(0, 16) + '）';
+    } catch(e) {
+      const country = document.getElementById('country').value;
+      document.getElementById('exchange').value = fallbackRates[country].toFixed(4);
+      status.className = 'rate-status error';
+      status.textContent = '⚠ 获取失败，使用参考汇率';
+    }
+    updateShipCosts();
+  }
+
+  function fmt(n, sym) { return sym + n.toFixed(2); }
+
+  function calculate() {
+    const cny = parseFloat(document.getElementById('cny_price').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    const cat = document.getElementById('category').value;
+    const country = document.getElementById('country').value;
+    const localPrice = parseFloat(document.getElementById('local_price').value);
+    const exchange = parseFloat(document.getElementById('exchange').value);
+    const sym = symbols[country];
+
+    if (!cny || !weight || !localPrice) { alert('请填写商品价格、重量和本地价格'); return; }
+    if (!cat) { alert('请选择商品类别'); return; }
+    if (!exchange) { alert('汇率获取中，请稍后再试'); return; }
+
+    const goodsCost = cny * exchange;
+    const shipCny = calcShipCost(shippers[selectedShipper], weight, country);
+    const shipCost = shipCny * exchange;
+    const taxRate = taxData[cat][country];
+    const taxCost = goodsCost * taxRate;
+    const total = goodsCost + shipCost + taxCost;
+    const diff = total - localPrice;
+    const pct = Math.abs((diff / localPrice) * 100).toFixed(1);
+
+    document.getElementById('res_online').textContent = fmt(total, sym);
+    document.getElementById('res_local').textContent = fmt(localPrice, sym);
+    document.getElementById('b_goods').textContent = fmt(goodsCost, sym);
+    document.getElementById('b_ship_label').textContent = '运费（' + shippers[selectedShipper].name + '）';
+    document.getElementById('b_ship').textContent = '¥' + shipCny.toFixed(0) + ' → ' + fmt(shipCost, sym);
+    document.getElementById('b_tax').textContent = taxRate === 0 ? fmt(0, sym) + ' (免税)' : fmt(taxCost, sym);
+    document.getElementById('b_total').textContent = fmt(total, sym);
+
+    const vBox = document.getElementById('verdict_box');
+    if (Math.abs(diff) < localPrice * 0.05) {
+      vBox.className = 'verdict similar';
+      vBox.textContent = '两者价格相差不大（差距小于 5%），随意选择都可以。';
+    } else if (diff < 0) {
+      vBox.className = 'verdict cheaper';
+      vBox.textContent = '✓ 海淘更划算！比本地便宜 ' + sym + Math.abs(diff).toFixed(2) + '，省了 ' + pct + '%。';
+    } else {
+      vBox.className = 'verdict expensive';
+      vBox.textContent = '✗ 本地购买更划算！海淘要贵 ' + sym + diff.toFixed(2) + '（贵 ' + pct + '%）。';
+    }
+
+    document.getElementById('result_section').style.display = 'block';
+    document.getElementById('result_section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  renderShipGrid();
+  fetchRates();
+</script>
+</body>
+</html>
